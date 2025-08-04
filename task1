@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Colorful Navbar Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box; 
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f6fa;
+      color: #333;
+    }
+
+    nav.navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #0066ff, #00ccff);
+      color: white;
+      transition: all 0.3s ease-in-out;
+      z-index: 1000;
+    }
+
+    nav.navbar.scrolled {
+      background: #222;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    ul.nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    ul.nav-links a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 5px;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    ul.nav-links a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+        color: white;
+      }
+
+      ul.nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: #333;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        padding: 20px;
+      }
+
+      ul.nav-links.active {
+        display: flex;
+      }
+
+      ul.nav-links a {
+        color: white;
+        padding: 12px 0;
+      }
+    }
+
+    main {
+      padding-top: 100px;
+      text-align: center;
+    }
+
+    section {
+      padding: 60px 20px;
+    }
+
+    .section-block {
+      max-width: 900px;
+      margin: auto;
+      padding: 50px;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 60px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+      color: #222;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    /* Section background color */
+    #home { background-color: #e3f2fd; }
+    #about { background-color: #fce4ec; }
+    #services { background-color: #e8f5e9; }
+    #portfolio { background-color: #fff3e0; }
+    #contact { background-color: #ede7f6; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="logo"><i class="fas fa-leaf"></i> ColorSite</div>
+    <i class="fas fa-bars hamburger" id="hamburger"></i>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="home" class="section-block">
+      <h1>Welcome to ColorSite</h1>
+      <p>Simple. Clean. Colorful. Scroll down to explore!</p>
+    </section>
+
+    <section id="about" class="section-block">
+      <h1>About Us</h1>
+      <p>We make vibrant websites with clean aesthetics and great user experience.</p>
+    </section>
+
+    <section id="services" class="section-block">
+      <h1>Our Services</h1>
+      <p>Design, Development, UI/UX, and Responsive Web Apps.</p>
+    </section>
+
+    <section id="portfolio" class="section-block">
+      <h1>Portfolio</h1>
+      <p>See how we've helped brands grow with beautiful interfaces.</p>
+    </section>
+
+    <section id="contact" class="section-block">
+      <h1>Contact Us</h1>
+      <p>Have a project? Let’s talk. We’re excited to work with you.</p>
+    </section>
+  </main>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Colorful Stopwatch</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: radial-gradient(circle at top left, #ff9a9e, #fad0c4, #fad0c4, #a1c4fd);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .stopwatch-container {
+      background: rgba(255, 255, 255, 0.07);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+    }
+
+    .glow-ring {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #f6d365, #fda085, #f6d365);
+      animation: rotate 5s linear infinite;
+      box-shadow: 0 0 25px #fda085;
+    }
+
+    .glow-ring::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #111;
+    }
+
+    @keyframes rotate {
+      0% { transform: translateX(-50%) rotate(0deg); }
+      100% { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    .stickers {
+      display: flex;
+      justify-content: space-between;
+      position: absolute;
+      width: 100%;
+      top: -25px;
+      left: 0;
+      padding: 0 20px;
+    }
+
+    .stickers span {
+      font-size: 35px;
+      animation: bounce 1.8s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #1a1918;
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+
+    #display {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      background: #000;
+      padding: 15px 30px;
+      border-radius: 15px;
+      border: 3px solid #ffe66d;
+      color: #ffe66d;
+      letter-spacing: 3px;
+    }
+
+    .buttons {
+      margin: 20px 0;
+    }
+
+    .buttons button {
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      padding: 10px 20px;
+      margin: 10px 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(255, 236, 210, 0.6);
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    .buttons button:hover {
+      transform: scale(1.1);
+      background-color: #ffe0c2;
+    }
+
+    .laps {
+      max-height: 200px;
+      overflow-y: auto;
+      background: rgba(255,255,255,0.08);
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .laps p {
+      margin: 8px 0;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .stats {
+      margin-top: 20px;
+      text-align: left;
+      font-size: 1rem;
+      animation: pulse 2s infinite;
+    }
+
+    .stats span {
+      color: #111111;
+      font-weight: bold;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stopwatch-container">
+    <div class="glow-ring"></div>
+    <div class="stickers">
+      <span>✨</span>
+      <span>✨</span>
+    </div>
+    <h1>Colorful Stopwatch</h1>
+    <div id="display">00:00:00</div>
+    <div class="buttons">
+      <button onclick="startStopwatch()">Start</button>
+      <button onclick="pauseStopwatch()">Pause</button>
+      <button onclick="resetStopwatch()">Reset</button>
+      <button onclick="recordLap()">Lap</button>
+    </div>
+    <div class="laps" id="laps"></div>
+    <div class="stats" id="stats"></div>
+  </div>
+
+  <script>
+    let timer;
+    let isRunning = false;
+    let seconds = 0;
+    let lapsArray = [];
+    const display = document.getElementById('display');
+    const laps = document.getElementById('laps');
+    const stats = document.getElementById('stats');
+
+    function formatTime(sec) {
+      const hrs = Math.floor(sec / 3600);
+      const mins = Math.floor((sec % 3600) / 60);
+      const secs = sec % 60;
+      return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function startStopwatch() {
+      if (!isRunning) {
+        isRunning = true;
+        timer = setInterval(() => {
+          seconds++;
+          display.textContent = formatTime(seconds);
+        }, 1000);
+      }
+    }
+
+    function pauseStopwatch() {
+      if (isRunning) {
+        isRunning = false;
+        clearInterval(timer);
+      }
+    }
+
+    function resetStopwatch() {
+      clearInterval(timer);
+      isRunning = false;
+      seconds = 0;
+      display.textContent = '00:00:00';
+      laps.innerHTML = '';
+      stats.innerHTML = '';
+      lapsArray = [];
+    }
+
+    function recordLap() {
+      if (isRunning) {
+        lapsArray.push(seconds);
+        const lapTime = formatTime(seconds);
+        const lapElement = document.createElement('p');
+        lapElement.textContent = `Lap ${lapsArray.length}: ${lapTime}`;
+        laps.appendChild(lapElement);
+        updateStats();
+      }
+    }
+
+    function updateStats() {
+      if (lapsArray.length === 0) return;
+      const min = Math.min(...lapsArray);
+      const max = Math.max(...lapsArray);
+      const avg = lapsArray.reduce((a, b) => a + b) / lapsArray.length;
+      stats.innerHTML = `
+        <p><strong>Fastest Lap:</strong> <span>${formatTime(min)}</span></p>
+        <p><strong>Slowest Lap:</strong> <span>${formatTime(max)}</span></p>
+        <p><strong>Average Time:</strong> <span>${formatTime(Math.floor(avg))}</span></p>
+      `;
+    }
+  </script>
+</body>
+</html>\
